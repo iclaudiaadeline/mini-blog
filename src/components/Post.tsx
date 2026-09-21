@@ -4,7 +4,14 @@ interface PostProps {
   post: PostType;
 }
 function Post({ post }: PostProps) {
-    return <h2>{post.title}</h2>;
+    return (
+      <article>
+        <h2>{post.title}</h2>
+        <p>{post.author}</p>
+        <p>{post.content}</p>
+        <p>{post.date}</p>
+      </article>
+    );
 }
 
 export default Post;
