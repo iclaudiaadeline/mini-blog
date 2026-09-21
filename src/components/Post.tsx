@@ -1,3 +1,4 @@
+import '../styles/posts.css';
 import type { Post as PostType } from '../types/post';
 
 interface PostProps {
@@ -5,7 +6,7 @@ interface PostProps {
 }
 function Post({ post }: PostProps) {
     return (
-      <article>
+      <article className="post-card">
         <h2>{post.title}</h2>
         <p>{post.author}</p>
         <p>{post.content}</p>
