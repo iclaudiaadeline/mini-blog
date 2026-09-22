@@ -29,3 +29,29 @@
   max-width: 1200px;
   margin: 0 auto;
 }
+
+.post-meta {
+  font-size: 0.8rem;
+  color: #555;
+  margin: 0 0 8px;
+}
+
+.site-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #f4f1ea;
+  padding: 24px 32px;
+}
+
+.site-header h1 {
+  font-family: Georgia, serif;
+  color: #1b3a2b;
+  font-size: 2rem;
+  margin: 0;
+}
+
+.site-header a {
+  font-size: 0.9rem;
+  color: #1b3a2b;
+}

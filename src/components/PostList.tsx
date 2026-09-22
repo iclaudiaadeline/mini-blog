@@ -20,7 +20,7 @@ const posts: PostType[] = [
   {
     id: 3,
     title: 'Keep functions small',
-    author: 'Amara',
+    author: 'Maya Chen',
     content: 'If a function does three different jobs, split it into three functions. Small pieces are easier to test and easier to reuse.',
     date: '2026-08-30',
   },

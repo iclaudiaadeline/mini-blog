@@ -7,12 +7,16 @@ interface PostProps {
 }
 function Post({ post }: PostProps) {
     const isNew = Date.now() - new Date(post.date).getTime() < 24 * 60 * 60 * 1000;
+    const preview = post.content.split(' ').slice(0, 8).join(' ') + '...';
     return (
-      <article className="post-card">
+      <article 
+      className="post-card"
+      style={{ backgroundColor: post.author === 'Amara' ? '#f5d76e' : undefined
+              
+      }}>
         <h2>{post.title}{isNew && <span className="new-badge">New!</span>}</h2>
-        <p>{post.author}</p>
-        <p>{post.content}</p>
-        <p>{post.date}</p>
+        <p className="post-meta">{post.author} - {post.date}</p>
+        <p>{preview}</p>
       </article>
     );
 }
