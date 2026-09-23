@@ -1,107 +1,152 @@
-# Dev Insights
+# Dev Insights - Mini Blog
 
-Dev Insights is a small internal mini blog for sharing quick web development tips. It is built with React, TypeScript, and Vite for the Formative 1 React Mini Blog Project.
+Dev Insights is an internal mini blog for sharing quick web development tips. It was built for the Formative 1 React Mini Blog Project using React, TypeScript, and Vite.
 
 ## Features
 
-- Displays three typed development posts with a title, author, preview, and date.
-- Shows a `New!` badge for posts published within the last 24 hours.
-- Highlights posts written by Amara with conditional inline styling.
+- Displays three typed sample posts.
+- Shows each post's title, author, content preview, and date.
+- Displays a `New!` badge for posts published within the last 24 hours.
+- Highlights posts written by `Amara` using conditional inline styling.
 - Uses reusable `Header`, `PostList`, and `Post` components.
-- Uses `React.memo` to avoid rendering a post card when its props have not changed.
+- Uses `React.memo` to optimize the reusable `Post` component.
 - Uses unique post IDs as React list keys.
-- Logs component mount and unmount events through the `withLogger` higher-order component.
+- Logs component mount and unmount events with the `withLogger` higher-order component.
 - Includes responsive external CSS for smaller screens.
 
 ## Technologies and Packages
 
-- React 19 and React DOM
-- TypeScript
-- Vite
-- ESLint
-- `@vitejs/plugin-react`
+| Technology or package | Purpose |
+| --- | --- |
+| React 19 | User interface components |
+| React DOM 19 | Renders React in the browser |
+| TypeScript | Static typing for the application |
+| Vite | Development server and production build tool |
+| ESLint | Code quality and lint checking |
+| `@vitejs/plugin-react` | React support in Vite |
 
-No additional UI or CSS libraries are used. The styling is written with regular CSS and an inline style in the `Post` component.
+No third-party UI or CSS-in-JS libraries are used. Styling uses regular CSS files and an inline style in `Post.tsx`.
 
-## Getting Started
-
-### Prerequisites
+## Prerequisites
 
 - Node.js 18 or newer
 - npm
 
-### Install and run
+## Installation
+
+Clone the repository and install its dependencies:
 
 ```bash
+git clone <your-repository-url>
+cd mini-blog
 npm install
+```
+
+## Running the Application
+
+This project uses **Vite** as its development server and build tool.
+
+```bash
 npm run dev
 ```
 
-Open the local URL shown by Vite, usually `http://localhost:5173`.
+Open the local URL shown by Vite, usually:
 
-### Available scripts
+```text
+http://localhost:5173
+```
+
+## Available Scripts
 
 | Command | Description |
 | --- | --- |
 | `npm run dev` | Starts the Vite development server with hot module replacement. |
-| `npm run build` | Runs TypeScript checks and creates a production build. |
 | `npm run lint` | Checks the project with ESLint. |
+| `npm run build` | Runs TypeScript checks and creates a production build. |
 | `npm run preview` | Serves the production build locally. |
 
-There is currently no automated test suite in this formative project. The build and lint commands are the available validation checks.
+There is no automated test framework configured for this formative project. The current verification checks are `npm run lint` and `npm run build`, followed by manual browser testing with `npm run dev`.
+
+## Manual Verification
+
+After starting the development server, verify that:
+
+- The header displays the `Dev Insights` logo and `New Post` link.
+- Three posts are displayed with their title, author, preview, and date.
+- The post by `Amara` has a different background color.
+- The post dated within the last 24 hours displays the `New!` badge.
+- The browser console logs `Header mounted` and `Header unmounted` for the HOC lifecycle.
+
+The `New Post` link is currently a static link because creating posts is outside the scope of this assessment.
 
 ## Project Structure
 
 ```text
-src/
-  components/
-    Header.tsx       Site heading and New Post link
-    Post.tsx         Reusable memoized post card
-    PostList.tsx     Typed sample post data and post list
-  hoc/
-    withLogger.tsx   Higher-order component for lifecycle logging
-  styles/
-    posts.css        External post and responsive styles
-  types/
-    post.ts          Shared Post TypeScript interface
-  App.tsx            Root component
-  main.tsx           Application entry point
+mini-blog/
+├── public/
+├── src/
+│   ├── components/
+│   │   ├── Header.tsx       # Logo and New Post link
+│   │   ├── Post.tsx         # Memoized reusable post card
+│   │   └── PostList.tsx     # Typed sample posts and list rendering
+│   ├── hoc/
+│   │   └── withLogger.tsx   # Mount and unmount logging HOC
+│   ├── styles/
+│   │   └── posts.css        # External layout and responsive styles
+│   ├── types/
+│   │   └── post.ts          # Shared Post interface
+│   ├── App.tsx              # Root component
+│   └── main.tsx             # Application entry point
+├── index.html
+├── package.json
+├── tsconfig.json
+└── vite.config.ts
 ```
 
-## Design Decisions
+## Component Design
 
-### Functional components
+All components are functional components. This choice is appropriate because the application is a small presentational interface and functional components work directly with modern React Hooks. A class component would require more boilerplate and class lifecycle methods for the same behavior.
 
-All components are functional components. This is appropriate for this application because the components mainly render data, and the `withLogger` HOC uses the `useEffect` Hook for mount and unmount behavior. Functional components also provide a concise modern React style without needing class lifecycle methods.
+| Component | Responsibility |
+| --- | --- |
+| `App` | Renders the logged `Header` and the `PostList`. |
+| `Header` | Displays the Dev Insights heading and New Post link. |
+| `PostList` | Stores the typed sample post array and renders one `Post` for each item. |
+| `Post` | Displays one post's title, author, preview, date, and conditional New badge. |
 
-### Styling
+## Styling Approach
 
+The assessment requires at least two styling methods. This project uses:
 
-The project uses two styling methods required by the assessment:
+1. **External CSS:** `src/styles/posts.css` controls the page layout, post cards, typography, colors, header, and responsive layout.
+2. **Inline styling:** `Post.tsx` conditionally applies a yellow background when `post.author === 'Amara'`.
 
-1. External CSS in `src/styles/posts.css` controls the layout, typography, colors, post cards, and responsive behavior.
-2. An inline style in `Post.tsx` conditionally highlights posts by Amara.
+The `New!` badge is conditionally rendered when the post date is less than 24 hours old. The current time is captured with a lazy `useState` initializer so the component does not call the impure `Date.now()` function directly during render.
 
-The `New!` badge is another example of conditional rendering. It appears
-when a post date is within the last 24 hours, calculated from the post's
-date rather than hardcoded, so it stays accurate as posts age.
+## Optimization and HOC
 
-### Optimization and HOC
+- **`React.memo`:** `Post` is exported with `memo(Post)`, allowing React to skip rendering the post card when its `post` prop has not changed.
+- **Unique keys:** `PostList` uses `post.id` as the `key` for each rendered post, helping React identify list items reliably.
+- **Higher-order component:** `withLogger` wraps `Header` in `App.tsx`. Its `useEffect` logs mount and unmount messages to the browser console.
 
-`Post` is wrapped with `React.memo`, so React can skip rendering it when
-the `post` prop has not changed. This was applied because the coursework
-covered it as a standard way to avoid unnecessary re-renders, even though
-the effect isn't very visible in an app this small. `PostList` also
-supplies the stable `post.id` value as the unique `key` for every
-rendered post. The `withLogger` HOC wraps the `Header` component and
-logs lifecycle messages to the browser console.
+## Development Decisions
 
-## Updating the Posts
+- Vite was chosen for its fast development server and straightforward TypeScript setup.
+- TypeScript's `Post` interface keeps every sample post consistent with the required `id`, `title`, `author`, `content`, and `date` fields.
+- Posts are currently hardcoded in `PostList.tsx` because the assignment only requires sample data. A future version could load posts from an API or form.
+- The HOC is applied in `App.tsx`, while `Header.tsx` exports the plain component. This keeps the component file compatible with React Fast Refresh and avoids wrapping the component twice.
 
-The sample posts are stored in the `posts` array in `src/components/PostList.tsx`. When adding a post, include every property required by the `Post` interface in `src/types/post.ts`, especially a unique `id`.
+## Challenges and Solutions
 
-## Reflection
+### Conditional date behavior
 
-The most valuable part of this project was learning how to break a React page into small reusable components and connect those components with TypeScript types. Defining the `Post` interface helped make the data structure clear, while the shared `Post` component avoided duplicating the markup for each article.
+One challenge was showing the `New!` badge only for posts published within the last 24 hours. Calling `Date.now()` directly during rendering caused a React purity lint error. I solved this by capturing the current time with a lazy `useState` initializer and comparing it with the post date.
 
-One challenge was combining conditional UI behavior with the styling requirements. I solved this by calculating whether a post is new from its date, rendering the badge only when appropriate, and using both an external stylesheet and an inline style for the author highlight. I would like to explore automated testing, form handling for the New Post link, and loading posts from an API in a future version.
+### Fast Refresh and the HOC
+
+Another challenge was the Fast Refresh lint error caused by wrapping and exporting `Header` with the HOC inside `Header.tsx`. I solved this by exporting the plain `Header` component and applying `withLogger` once in `App.tsx`. This keeps the component compatible with Fast Refresh and avoids wrapping it twice.
+
+### Meeting the styling and optimization requirements
+
+The project needed two styling methods, conditional styling, an optimization technique, and a HOC. I met these requirements by using external CSS for the layout, inline styling for Amara's post, `React.memo` for `Post`, stable post IDs as list keys, and `withLogger` for lifecycle logging.
+
