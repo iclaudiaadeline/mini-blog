@@ -8,7 +8,7 @@ const posts: PostType[] = [
     title: 'Use const by default',
     author: 'Amara',
     content: 'Start every variable with const and only switch to let when the value really needs to change. It makes your code easier to read and safer.',
-    date: '2026-09-21',
+    date: '2026-09-23',
   },
   {
     id: 2,
